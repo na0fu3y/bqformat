@@ -1,0 +1,8 @@
+site_name: BQ Format
+
+theme:
+  name: material
+  language: ja
+
+markdown_extensions:
+  - codehilite
