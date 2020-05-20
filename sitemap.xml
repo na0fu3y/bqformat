@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
-     <loc>None</loc>
-     <lastmod>2020-05-19</lastmod>
+     <loc>https://na0fu3y.github.io/bqformat/</loc>
+     <lastmod>2020-05-20</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://na0fu3y.github.io/bqformat/reference/</loc>
+     <lastmod>2020-05-20</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
