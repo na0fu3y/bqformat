@@ -1,4 +1,5 @@
 site_name: BQ Format
+site_url: https://na0fu3y.github.io/bqformat/
 
 theme:
   name: material
