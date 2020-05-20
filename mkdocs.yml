@@ -4,5 +4,15 @@ theme:
   name: material
   language: ja
 
+plugins:
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          rendering:
+            show_source: true
+      watch:
+        - src/bqformat
+
 markdown_extensions:
   - codehilite
