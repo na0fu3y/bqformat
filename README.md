@@ -1,6 +1,6 @@
 # BQ Format
 
-BigQuery StandardSQL のフォーマットや列名ルールを強制します。
+BigQuery StandardSQLのフォーマットや列名ルールを強制します。
 
 # インストール
 
@@ -12,7 +12,7 @@ $ mv bqformat /usr/local/bin/bqformat
 
 # 使い方
 
-以下のコマンドで、フォーマット結果が formatted.sql に書き込まれます。
+以下のコマンドで、フォーマット結果がformatted.sqlに書き込まれます。
 
 ``` bash
 $ cat example.sql | bqformat > formatted.sql

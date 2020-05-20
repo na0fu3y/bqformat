@@ -20,3 +20,6 @@ fmt: build
 	docker run -it --rm -v ${PWD}:/usr/src/app/ ${NAME}:${DEBUG} autoflake -ri /usr/src/app
 	docker run -it --rm -v ${PWD}:/usr/src/app/ ${NAME}:${DEBUG} isort -rc /usr/src/app
 	docker run -it --rm -v ${PWD}:/usr/src/app/ ${NAME}:${DEBUG} black /usr/src/app
+
+lint: build
+	docker run -it --rm ${NAME}:${DEBUG} textlint **/*.md
