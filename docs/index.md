@@ -22,5 +22,5 @@ SQL文字列またはファイルを受け取り、フォーマット後の文�
 ## 作成物の使用例
 
 ``` bash
-cat example.sql | bqformat --check > formatted.sql
+cat example.sql | bqformat > formatted.sql
 ```

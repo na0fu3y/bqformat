@@ -4,6 +4,14 @@ BigQuery StandardSQLのフォーマットや列名ルールを強制します。
 
 # インストール
 
+## pip 環境
+
+``` bash
+$ pip install git+https://github.com/na0fu3y/bqformat
+```
+
+## Docker 環境
+
 ``` bash
 $ curl https://raw.githubusercontent.com/na0fu3y/bqformat/master/bqformat > bqformat
 $ chmod +x bqformat
