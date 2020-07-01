@@ -1,10 +1,15 @@
 import pytest
 
-from src.bqformat.main import SQL, Column
+from src.bqformat.main import SQL, Column, QuerySyntaxError
 
 
 def test_sql_formatted():
-    assert SQL("SELECT 1 AS a").formatted
+    assert SQL("select 1 a").formatted == "SELECT\n  1 AS a;\n"
+
+
+def test_sql_formatted_failure():
+    with pytest.raises(QuerySyntaxError):
+        _ = SQL("select 1a").formatted
 
 
 def test_sql_reports():

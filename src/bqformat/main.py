@@ -1,9 +1,15 @@
 import argparse
+import itertools
 import re
+import subprocess
 import sys
 from enum import Enum
 from pathlib import Path
 from typing import Container, NamedTuple
+
+
+class QuerySyntaxError(Exception):
+    pass
 
 
 class _Dictionary(Enum):
@@ -45,18 +51,47 @@ class Column(NamedTuple):
 class SQL(NamedTuple):
     query: str
 
+    @staticmethod
+    def pairwise(iterable):
+        """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
+        a, b = itertools.tee(iterable)
+        next(b, None)
+        return zip(a, b)
+
     @property
     def formatted(self):
-        return self.query
+        try:
+            return subprocess.run(
+                ["/format_sql"],
+                input=self.query.encode("utf-8"),
+                check=True,
+                capture_output=True,
+            ).stdout.decode("utf-8")
+        except subprocess.CalledProcessError as e:
+            raise QuerySyntaxError(e.stderr)
 
-    def _find_columns(self):
-        for m in re.finditer(r"(?<=AS )\w+", self.query):
-            column_name = m.group()
-            yield Column(column_name)
+    def _find_aliases(self):
+        out = subprocess.run(
+            ["/parse_statement"],
+            input=self.query.encode("utf-8"),
+            check=True,
+            capture_output=True,
+        ).stdout.decode("utf-8")
+        pattern_alias = re.compile(r" +Alias \[\d+-\d+\]")
+        pattern_identifier = re.compile(r" +Identifier\((.+)\) \[\d+-\d+\]")
+
+        for previous, current in SQL.pairwise(out.split("\n")):
+            if not pattern_alias.fullmatch(previous):
+                continue
+            m = pattern_identifier.fullmatch(current)
+            if m is None:
+                raise QuerySyntaxError(f"The alias must come before an identifier")
+            if pattern_alias.fullmatch(previous):
+                yield Column(m.group(1))
 
     @property
     def reports(self):
-        for column in self._find_columns():
+        for column in self._find_aliases():
             if column.report:
                 yield column
 

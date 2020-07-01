@@ -1,4 +1,22 @@
-FROM python:3.6 AS production
+FROM ubuntu:18.04 AS builder
+
+RUN apt-get update \
+ && apt-get install -y curl gnupg make python3 \
+ && ln -s /usr/bin/python3 /usr/bin/python \
+ && curl https://bazel.build/bazel-release.pub.gpg | apt-key add - \
+ && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
+ && apt-get update \
+ && apt-get install -y bazel=3.3.0
+
+WORKDIR /app
+
+COPY BUILD format_sql.cc parse_statement.cc WORKSPACE /app/
+
+RUN bazel build -t --cxxopt="-fpermissive" --cxxopt="-std=c++17" ...
+
+FROM python:3.8 AS production
+
+COPY --from=builder /app/bazel-bin/format_sql /app/bazel-bin/parse_statement /
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
