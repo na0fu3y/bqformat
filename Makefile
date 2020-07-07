@@ -24,8 +24,5 @@ fmt: build
 lint: build
 	docker run -it --rm ${NAME}:${DEBUG} textlint **/*.md
 
-zetasql:
-	docker build -f Dockerfile.zetasql -t zetasql .
-
-run: zetasql
-	echo 'select 1' | docker run -i --rm zetasql
+run: build
+	echo 'select 1 /* comment */ from a.b' | docker run -i --rm ${NAME}:${DEBUG} /format_sql
